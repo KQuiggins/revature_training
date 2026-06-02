@@ -1,0 +1,6 @@
+venv/
+.venv/
+*./env/
+Week_1/Day_1/qa-metrics-calculator/venv/
+env/
+__pycache__/
