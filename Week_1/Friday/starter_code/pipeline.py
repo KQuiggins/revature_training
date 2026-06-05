@@ -48,6 +48,51 @@ slow_test = list(filter(
     test_results
 ))
 
-summary_of_test = list()
+summary_of_test = list(map(
+    lambda test: 
+        f"{'✅' if test['status'] == 'pass' else '❌'}"
+        f" {test['name']}"
+        f" ({test['duration_ms']}ms)",
+    test_results
 
+))
 
+unique_module_names = set(map(
+    lambda test: test['module'],
+    test_results
+))
+
+# total = reduce(lambda a, b: a + b, nums)
+duration_of_all_test = reduce(
+    lambda total, test: total + test['duration_ms'],
+    test_results,
+    0
+)
+
+sum_of_failure_times = reduce(
+    lambda total, test: total + test['duration_ms'],
+    filter(
+        lambda test: test["status"] == "fail",
+        test_results
+    ),
+    0
+)
+
+longest_test_name = reduce(
+    lambda longest, current:
+        current
+        if len(current["name"]) > len(longest["name"])
+        else longest,
+    test_results
+)
+
+module_summary_dict = reduce(
+    lambda acc, test: {
+        **acc,
+        test["module"]: acc.get(test["module"], 0) + 1
+    },
+    test_results,
+    {}
+)
+
+print(module_summary_dict)
