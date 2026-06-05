@@ -95,4 +95,33 @@ module_summary_dict = reduce(
     {}
 )
 
-print(module_summary_dict)
+endpoints = ["/login", "/search", "/checkout", "/profile"]
+expected_codes = [200, 200, 201, 200]
+actual_codes = [200, 500, 201, 403]
+
+for endpoint, expected, actual in zip(
+    endpoints,
+    expected_codes,
+    actual_codes
+):
+    status = "PASS" if expected == actual else "FAIL"
+    print(
+        f"{endpoint}: "
+        f"expected {expected}, "
+        f"got {actual} -> {status}"
+    )
+
+names, modules, duration, statuses = zip(*[
+    (
+        test["name"],
+        test["module"],
+        test["duration_ms"],
+        test["status"]
+    )
+    for test in test_results
+])
+
+name_duration_map = dict(zip(names, duration))
+print(name_duration_map)
+
+
